@@ -3,6 +3,8 @@ import os.path
 import sys
 import glob
 
+TOPPAGE='index.mdx'
+TOPHTML='index.html'
 def usage():
     print 'usage: python pagen.py your_dir'
 
@@ -21,4 +23,14 @@ for mdfile in mdlist:
     else:
         print 'generating html:', htmlfile
         md.makehtml(mdfile, htmlfile)
+
+#making new md for index html
+content = ''
+for html in glob.glob('%s/*.html' % sys.argv[1]):
+    content += '- [%s](%s)\n' % (html, html)
+f=open(TOPPAGE, 'w')
+f.write(content)
+f.close()
+
+md.makehtml(TOPPAGE, TOPHTML)
 
