@@ -12,7 +12,7 @@ HTMLHEAD='''
 		Remove this if you use the .htaccess -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-		<title>new_file</title>
+		<title>###TITLE###</title>
 		<meta name="description" content="">
 		<meta name="author" content="kitamura">
 
@@ -422,7 +422,12 @@ def makehtml(in_md_file, out_html_file):
     f=open(in_md_file, 'r')
     mdsrc=f.read()
     f.close()
+    
+    first_line=""
+    with open(in_md_file, 'r') as f:
+        first_line = f.readline()
 
+    #print first_line
     md = markdown.Markdown(extensions=['extra', 'toc', 'admonition',])
     html = md.convert(unicode(mdsrc, 'utf-8'))
 
@@ -430,7 +435,7 @@ def makehtml(in_md_file, out_html_file):
     f=open(out_html_file, 'w')
     #f.write(html)
 
-    f.write(HTMLHEAD)
+    f.write(HTMLHEAD.replace('###TITLE###', first_line[:-1]))
     f.write(CSS2)
     f.write(BODYHEAD)
     f.write(html.encode('utf-8'))
